@@ -1,9 +1,7 @@
 name: Deploy server and extension
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 permissions:
   id-token: write  # Required for OIDC
@@ -11,12 +9,9 @@ permissions:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(vars.CI_RUNNER_LABELS) }}
     steps:
       - uses: actions/checkout@v4
-
-      - name: Install shellcheck and shfmt (used for testing)
-        run: sudo apt-get install -y shellcheck shfmt
 
       - uses: pnpm/action-setup@v4
         with:
@@ -34,10 +29,10 @@ jobs:
           git config --local user.name "skovhus"
 
       - name: Deploy server
-        run: bash scripts/release-server.sh
+        run: nix shell nixpkgs#shellcheck nixpkgs#shfmt -c bash scripts/release-server.sh
 
 
       - name: Deploy VS Code extension
-        run: bash scripts/release-client.sh
+        run: nix shell nixpkgs#shellcheck nixpkgs#shfmt -c bash scripts/release-client.sh
         env:
           VSCE_TOKEN: ${{ secrets.VSCE_PERSONAL_ACCESS_TOKEN }}

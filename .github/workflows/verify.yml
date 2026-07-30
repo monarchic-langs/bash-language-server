@@ -1,11 +1,14 @@
 name: Verify changes
 
-on: [pull_request]
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
 
 jobs:
   verify:
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON(vars.CI_RUNNER_LABELS) }}
 
     strategy:
       matrix:
@@ -13,9 +16,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Install shellcheck and shfmt (used for testing)
-        run: sudo apt-get install -y shellcheck shfmt
 
       - uses: pnpm/action-setup@v4
         with:
@@ -30,7 +30,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Verify changes
-        run: pnpm verify:bail
+        run: nix shell nixpkgs#shellcheck nixpkgs#shfmt -c pnpm verify:bail
 
       - name: Publish coverage to codecov.io
         uses: codecov/codecov-action@v5
