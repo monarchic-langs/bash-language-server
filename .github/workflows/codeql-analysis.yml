@@ -2,7 +2,7 @@ name: "CodeQL Code Scanning"
 
 on:
   push:
-    branches: [main]
+    branches: [monarchic]
   workflow_dispatch:
   schedule:
     - cron: '0 0 * * MON' # every Monday

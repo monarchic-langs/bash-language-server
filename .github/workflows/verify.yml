@@ -2,7 +2,7 @@ name: Verify changes
 
 on:
   push:
-    branches: [main]
+    branches: [monarchic]
   workflow_dispatch:
 
 jobs:
