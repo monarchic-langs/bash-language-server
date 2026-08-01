@@ -58,7 +58,7 @@ describe('formatter', () => {
     expect(async () => {
       await getFormattingResult({ document: FIXTURE_DOCUMENT.PARSE_PROBLEMS })
     }).rejects.toThrow(
-      /Shfmt: exited with status 1: .*\/testing\/fixtures\/parse-problems.sh:10:1: > must be followed by a word/,
+      /Shfmt: exited with status 1: .*\/testing\/fixtures\/parse-problems.sh:10:1: `?>`? must be followed by a word/,
     )
   })
 
@@ -69,7 +69,7 @@ describe('formatter', () => {
         shfmtConfig: { languageDialect: 'posix' },
       })
     }).rejects.toThrow(
-      /Shfmt: exited with status 1: .*\/testing\/fixtures\/shfmt\.sh:25:14: (the "function" builtin|a command can only contain words and redirects; encountered \()/,
+      /Shfmt: exited with status 1: .*\/testing\/fixtures\/shfmt\.sh:25:14: (the [`"]function[`"] builtin is a bash feature; tried parsing as posix|a command can only contain words and redirects; encountered \()/,
     )
   })
 
@@ -610,7 +610,7 @@ describe('formatter', () => {
     expect(async () => {
       await getFormattingResult({ document: testDocument })
     }).rejects.toThrow(
-      /Shfmt: exited with status 1: <standard input>:10:1: > must be followed by a word/,
+      /Shfmt: exited with status 1: <standard input>:10:1: `?>`? must be followed by a word/,
     )
   })
 
