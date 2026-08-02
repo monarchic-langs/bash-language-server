@@ -94,5 +94,22 @@
         '';
       };
     };
+    apps = {
+      ${system}.upgrade-tree-sitter = {
+        type = "app";
+        program = "${pkgs.writeShellApplication {
+          name = "upgrade-tree-sitter";
+          runtimeInputs = [
+            pkgs.curl
+            pkgs.jq
+            pkgs.nodejs_22
+            pkgs.pnpm_10
+          ];
+          text = ''
+            exec ${pkgs.bash}/bin/bash scripts/upgrade-tree-sitter.sh
+          '';
+        }}/bin/upgrade-tree-sitter";
+      };
+    };
   };
 }
